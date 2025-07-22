@@ -1,0 +1,1 @@
+export { default as CircleTab } from './components/CircleTab.vue';
