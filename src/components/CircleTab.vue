@@ -29,20 +29,17 @@ const props = defineProps({
 
 const tabContainer = ref(null)
 
-const hover = (el) => {
-  console.log("Hey!")
-}
-
 const circle = (v) => {
+  console.log(`v: ${v}, mx.value: ${mx.value}, r: ${v / 2 / mx.value * 100}`)
   return `
   <svg viewbox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-    <circle 
-      cx="50" 
-      cy="50" 
-      r="${v / 2 / mx.value * 100}" 
-      stroke="${props.strokeColor}" 
-      stroke-width="${props.strokeWidth}" 
-      fill="${props.fillColor}" 
+    <circle
+      cx="50"
+      cy="50"
+      r="${v / 2 / mx.value * 100}"
+      stroke="${props.strokeColor}"
+      stroke-width="${props.strokeWidth}"
+      fill="${props.fillColor}"
     />
   </svg>
   `
@@ -56,7 +53,7 @@ const mn = computed(() => {
 const mx = computed(() => {
   if (props.maxVal) return props.maxVal
   const rowmax = props.data.map((x) => Math.max(...Object.values(x['values'])))
-  return Math.min(...rowmax)
+  return Math.max(...rowmax)
 })
 
 const outcomes = computed(() => {
@@ -77,8 +74,13 @@ const rows = computed(() => {
     const values = cats.value.map((y) => {
       const v = x['values'][y]
       const s = circle(v)
-      const t = v
-      return `<td class=data><div class=circ>${s}</div><div class=value><p>${v}</p></div><div class="tooltip hidden">${t}</div></td>`
+      return `
+        <td class=data>
+          <div class=circ>${s}</div>
+          <div class=value><p>${v}</p></div>
+          <div class="tooltip hidden">${v}</div>
+        </td>
+      `
     }).join('')
     return `<tr>${outcome}${values}</tr>`
   }).join('')
@@ -100,7 +102,7 @@ onMounted(() => {
   const dat = tbl.querySelectorAll("td.data")
   for (var i = 0; i < dat.length; i++) {
     const circ = dat[i].querySelector("div.circ > svg > circle")
-    const ttip = dat[i].querySelector("div.tooltip") 
+    const ttip = dat[i].querySelector("div.tooltip")
 
     circ.addEventListener('mouseover', (e) => {
       ttip.classList.remove("hidden")
