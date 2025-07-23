@@ -36,7 +36,7 @@ const circle = (v) => {
     <circle
       cx="50"
       cy="50"
-      r="${v / 2 / mx.value * 100}"
+      r="${v / 2 / mx.value * 100 - props.strokeWidth}"
       stroke="${props.strokeColor}"
       stroke-width="${props.strokeWidth}"
       fill="${props.fillColor}"
@@ -77,8 +77,8 @@ const rows = computed(() => {
       return `
         <td class=data>
           <div class=circ>${s}</div>
-          <div class=value><p>${v}</p></div>
-          <div class="tooltip hidden">${v}</div>
+          <div class="value hidden"><p>${v}</p></div>
+          <div class="tooltip hidden"><p>${v}</p></div>
         </td>
       `
     }).join('')
@@ -104,18 +104,20 @@ onMounted(() => {
     const circ = dat[i].querySelector("div.circ > svg > circle")
     const ttip = dat[i].querySelector("div.tooltip")
 
-    circ.addEventListener('mouseover', (e) => {
+    circ.addEventListener('mouseenter', (e) => {
+      e.preventDefault()
       ttip.classList.remove("hidden")
     })
 
-    circ.addEventListener('mouseout', (e) => {
+    circ.addEventListener('mouseleave', (e) => {
+      e.preventDefault()
       ttip.classList.add("hidden")
     })
 
     circ.addEventListener('mousemove', (e) => {
       e.preventDefault()
-      ttip.style.left = (e.offsetX - 5) + "px"
-      ttip.style.top = (e.offsetY - ttip.offsetHeight - 5) + "px"
+      ttip.style.left = (e.pageX + 5 - 1) + "px"
+      ttip.style.top = (e.pageY - ttip.offsetHeight + 1) + "px"
     })
   }
 })
@@ -146,8 +148,9 @@ table.circle-tab > thead {
 
 table.circle-tab > tbody > tr > td.data {
   position: relative;
-  width: 100px;
-  height: 100px;
+  width: 5em;
+  height: 5em;
+  box-sizing: border-box;
 }
 
 table.circle-tab > tbody > tr > td.data > div.circ {
@@ -159,19 +162,14 @@ table.circle-tab > tbody > tr > td.data > div.circ {
   top: 0; left: 0;
 }
 
-table.circle-tab > tbody > tr > td.data > div.circ > svg {
-  /* margin: auto auto; */
-}
-
 table.circle-tab > tbody > tr > td.data > div.value {
   display: block;
   position: absolute;
+  display: grid;
+  place-items: center;
   width: 100%;
   height: 100%;
   top: 0; left: 0;
-  text-align: center;
-  vertical-align: middle!important;
-  display: none;
 }
 
 table.circle-tab > tbody > tr > td.data > div.value > p {
@@ -181,29 +179,28 @@ table.circle-tab > tbody > tr > td.data > div.value > p {
 }
 
 table.circle-tab > tbody > tr > td.data > div.tooltip {
-  position: absolute;
-  top: 0; left: 0;
-  border: 1px solid black;
+  position: fixed;  
+  height: fit-content;
+  width: fit-content;
+  background-color: #333C;
+  border: 1px solid #333;
   border-radius: 5px;
-  padding: 5px;
-  background-color: #333;
+  z-index: 999;
+}
+
+table.circle-tab > tbody > tr > td.data > div.tooltip > p {
+  display: block;
   color: #FFFFFF;
   text-align: center;
-  width: fit-content;
+  padding: 5px;
+  margin: 0;
+}
+
+table.circle-tab > tbody > tr > td.data > div.value.hidden {
+  display: none;
 }
 
 table.circle-tab > tbody > tr > td.data > div.tooltip.hidden {
   display: none;
-}
-
-table.circle-tab > tbody > tr > td.data > div.tooltip::after {
-  content: " ";
-  position: absolute;
-  top: 100%; /* At the bottom of the tooltip */
-  left: 10%;
-  margin-left: 0;
-  border-width: 5px;
-  border-style: solid;
-  border-color: #333 transparent transparent transparent;
 }
 </style>
