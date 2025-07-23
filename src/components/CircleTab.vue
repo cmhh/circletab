@@ -30,13 +30,17 @@ const props = defineProps({
 const tabContainer = ref(null)
 
 const circle = (v) => {
-  console.log(`v: ${v}, mx.value: ${mx.value}, r: ${v / 2 / mx.value * 100}`)
+  const r_max = Math.sqrt(mx.value / Math.PI)
+  const p = v / mx.value
+  const r0 = Math.sqrt(p / Math.PI)
+  const r1 = r0 / r_max * 50 - props.strokeWidth
+  console.log(`v: ${v}, mx.value: ${mx.value}, r: ${r1}`)
   return `
   <svg viewbox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
     <circle
       cx="50"
       cy="50"
-      r="${v / 2 / mx.value * 100 - props.strokeWidth}"
+      r="${r1}"
       stroke="${props.strokeColor}"
       stroke-width="${props.strokeWidth}"
       fill="${props.fillColor}"

@@ -13,11 +13,12 @@ import CircleTab from './components/CircleTab.vue'
 
   <CircleTab 
     :data="[
-      {outcome: 'Foo', values: {A: 1.0, B: 0.2, C: 0.3}},
+      {outcome: 'Foo', values: {A: 1.0, B: 0.5, C: 0.1}},
       {outcome: 'Bar', values: {A: 0.4, B: 0.3, C: 0.1}},
       {outcome: 'Baz', values: {A: 0.2, B: 0.8, C: 0.2}}
     ]"
     :maxVal="1"
+    :strokeWidth="0"
   />
 
   <p>Bacon ipsum dolor amet buffalo ham leberkas pork loin filet mignon jowl jerky salami turducken ribeye boudin kevin pastrami. Ground round jowl strip steak chicken pork belly, turducken beef ribs tri-tip boudin cupim. Pancetta tenderloin drumstick, alcatra short ribs pork shankle meatloaf pork chop venison salami brisket fatback bresaola. Buffalo pork loin ball tip flank ham, alcatra filet mignon brisket ribeye. Turkey fatback drumstick sausage, ball tip chicken meatball capicola strip steak prosciutto flank alcatra beef ribs sirloin. T-bone shoulder sirloin shank leberkas short ribs. Bresaola leberkas corned beef meatball.</p>
