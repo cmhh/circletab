@@ -116,8 +116,8 @@ onMounted(() => {
 
     circ.addEventListener('mousemove', (e) => {
       e.preventDefault()
-      ttip.style.left = (e.pageX + 5 - 1) + "px"
-      ttip.style.top = (e.pageY - ttip.offsetHeight + 1) + "px"
+      ttip.style.left = (e.pageX + 5 - window.scrollX - 1) + "px"
+      ttip.style.top = (e.pageY - ttip.offsetHeight - window.scrollY + 1) + "px"
     })
   }
 })
